@@ -55,6 +55,7 @@ namespace Visit.Test
         {
             DateTime cur_date = DateTime.Now;
             cur_date = DateTime.ParseExact(cur_date.ToString("yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss", null);
+            Console.WriteLine(cur_date);
             var ComTimeTuple = Tuple.Create(cur_date, commodity);
 
             if (!_customRates.ContainsKey(ComTimeTuple))
@@ -143,6 +144,89 @@ namespace Visit.Test
             Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetCurrentTaxRate(Commodity.FoodServices));
 
             Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, DateTime.Now));
+
+            bool flag = true;
+            while (flag)
+            {
+                Console.WriteLine("1.GetStandardTaxRate 2.SetCustomTaxRate 3.GetTaxRateForDateTime 4.GetCurrentTaxRate 5.Exit");
+                Console.Write("Enter Your Choice: ");
+                int input = int.Parse(Console.ReadLine());
+
+                if (input == 1)
+                {
+
+                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                    Console.Write("Enter the Commodity: ");
+                    string commodity = Console.ReadLine();
+                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
+                    Console.WriteLine("Taxrate of {0} is {1}", comm, taxc.GetStandardTaxRate(comm));
+
+
+                }
+
+
+                else if (input == 2)
+                {
+
+                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                    Console.Write("Enter the Commodity: ");
+                    string commodity = Console.ReadLine();
+                    Console.Write("Enter the Custom TaxRate: ");
+                    string custTax = Console.ReadLine();
+                    double customTax = Convert.ToDouble(custTax);
+                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
+
+                    taxc.SetCustomTaxRate(comm, customTax);
+                    Console.WriteLine("Taxrate of {0} is updated to {1}", comm, customTax);
+
+
+                }
+
+
+
+                else if (input == 3)
+                {
+
+                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                    Console.Write("Enter the Commodity: ");
+                    string commodity = Console.ReadLine();
+                    Console.Write("Enter the DateTime: ");
+                    string custTax = Console.ReadLine();
+                    double customTax = Convert.ToDouble(custTax);
+                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
+
+                    taxc.SetCustomTaxRate(comm, customTax);
+                    Console.WriteLine("Taxrate of {0} is  {1}", comm,taxc.GetTaxRateForDateTime(comm, datetime));
+
+
+                }
+
+
+
+                else if (input == 4)
+                {
+
+                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                    Console.Write("Enter the Commodity: ");
+                    string commodity = Console.ReadLine();
+
+                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
+
+                    Console.WriteLine("Current Taxrate of {0} is {1}", comm, taxc.GetCurrentTaxRate(comm));
+
+
+                }
+                else if (input == 5)
+                    Environment.Exit(0);
+                else
+                    Console.WriteLine("Enter the correct input again..");
+
+
+
+
+            }
+
+           
 
 
         }
