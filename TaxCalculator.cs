@@ -73,13 +73,45 @@ namespace Visit.Test
         public double GetTaxRateForDateTime(Commodity commodity, DateTime date)
         {
             //TODO: implement
+            var ComTimeTuple = Tuple.Create(date, commodity);
             var typ = _customRates.Select(s => s.Key).Where(d => d.Item2 == commodity);
             if (typ.Count() == 0)
-               return GetStandardTaxRate(commodity);
+                return GetStandardTaxRate(commodity);
+            else if (_customRates.ContainsKey(ComTimeTuple))
+            {
+                return _customRates[ComTimeTuple];
+            }
+            else if (date < _customRates.Keys.First().Item1)
+            {
+
+                return GetStandardTaxRate(commodity);
+            }
+
+            else if (date > _customRates.Keys.Last().Item1)
+            {
+                var lastkey = _customRates.Keys.Last();
+                return _customRates[lastkey];
+
+
+            }
+
             else {
 
+                var previousEntry = _customRates.Keys.First();
+                foreach (var entry in typ)
+                {
+                    if (entry.Item1 > date)
+                    {
 
-                return 3.66;
+                        return _customRates[previousEntry];
+                    }
+
+
+                        previousEntry = entry;
+                }
+
+
+
             }
 
 
@@ -143,7 +175,9 @@ namespace Visit.Test
         {
 
             TaxCalculator taxc = new TaxCalculator();
-
+            DateTime firstone =  DateTime.Now;
+            Console.WriteLine(" Tax rate for alcohol is : {0}",taxc.GetTaxRateForDateTime(Commodity.Alcohol, firstone));
+            Console.WriteLine(" Tax rate for food is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, firstone));
 
             for (int i = 0; i < 1000; i++)
             {
@@ -152,6 +186,7 @@ namespace Visit.Test
                 Console.WriteLine(taxc.GetCurrentTaxRate(Commodity.FoodServices));
 
             }
+            Console.WriteLine(" Tax rate for food is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, DateTime.Now));
 
             for (int i = 0; i < 5; i++)
             {
