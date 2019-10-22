@@ -66,9 +66,15 @@ namespace Visit.Test
         {
             //TODO: support saving multiple custom rates for different combinations of Commodity/DateTime
             //TODO: make sure we never save duplicates, in case of e.g. clock resets, DST etc - overwrite old values if this happens
-            var ComTimeTuple = Tuple.Create(DateTime.Now, commodity);
+            DateTime cur_date = DateTime.Now;
+            cur_date = DateTime.ParseExact(cur_date.ToString("yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss", null);
+            var ComTimeTuple = Tuple.Create(cur_date, commodity);
 
-            _customRates[ComTimeTuple] = rate;
+            //            _customRates[ComTimeTuple] = rate;
+            if(!_customRates.ContainsKey(ComTimeTuple))
+            _customRates.Add(ComTimeTuple, rate);
+            else _customRates[ComTimeTuple] = rate;
+            //  Thread.Sleep(10);
         }
         static Dictionary<Tuple<DateTime, Commodity>, double> _customRates = new Dictionary<Tuple<DateTime, Commodity>, double>();
 
