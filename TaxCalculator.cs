@@ -1,17 +1,3 @@
-/*using System;
-
-namespace CSharpTest
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
-    }
-}
-
-*/
 
 
 using System;
@@ -76,7 +62,7 @@ namespace Visit.Test
             else _customRates[ComTimeTuple] = rate;
             //  Thread.Sleep(10);
         }
-        static Dictionary<Tuple<DateTime, Commodity>, double> _customRates = new Dictionary<Tuple<DateTime, Commodity>, double>();
+        static SortedDictionary<Tuple<DateTime, Commodity>, double> _customRates = new SortedDictionary<Tuple<DateTime, Commodity>, double>();
 
 
         /// <summary>
@@ -87,6 +73,16 @@ namespace Visit.Test
         public double GetTaxRateForDateTime(Commodity commodity, DateTime date)
         {
             //TODO: implement
+            var typ = _customRates.Select(s => s.Key).Where(d => d.Item2 == commodity);
+            if (typ.Count() == 0)
+               return GetStandardTaxRate(commodity);
+            else {
+
+
+                return 3.66;
+            }
+
+
             throw new NotImplementedException();
         }
 
@@ -97,25 +93,31 @@ namespace Visit.Test
         /// </summary>
         public double GetCurrentTaxRate(Commodity commodity)
         {
-            var ComTimeTuple = Tuple.Create(DateTime.Now, commodity);
+           /* var ComTimeTuple = Tuple.Create(DateTime.Now, commodity);
             //TODO: implement
             if (_customRates.ContainsKey(ComTimeTuple))
             {
                 Console.WriteLine(_customRates[ComTimeTuple]);
             }
             //var typ = _customRates.Where(k => k.Key.Item2 == commodity);
+           */ 
             var typ = _customRates.Select(s => s.Key).Where(d => d.Item2 == commodity);
-            foreach (var entry in typ)
-            {
+            if (typ.Count() == 0)
+                return GetStandardTaxRate(commodity);
+            else {
+                foreach (var entry in typ)
+                {
 
-                // Console.WriteLine("Item 1: {0} , Item2 :{1}, Value : {2}", entry.Key.Item1, entry.Key.Item2, entry.Value);
+                    // Console.WriteLine("Item 1: {0} , Item2 :{1}, Value : {2}", entry.Key.Item1, entry.Key.Item2, entry.Value);
 
-                Console.WriteLine("{0} and value is {1}",entry, _customRates[entry]);
+                    Console.WriteLine("{0} and value is {1}",entry, _customRates[entry]);
 
+                }
+                var lastkey = _customRates.Keys.Last();
+                return _customRates[lastkey];
             }
-
             //Console.WriteLine(typ);
-            return 3.66;//_customRates.ContainsKey(commodity) ? _customRates[commodity].Item2 : GetStandardTaxRate(commodity);
+//            return 3.66;//_customRates.ContainsKey(commodity) ? _customRates[commodity].Item2 : GetStandardTaxRate(commodity);
             throw new NotImplementedException();
         }
 
@@ -143,7 +145,7 @@ namespace Visit.Test
             TaxCalculator taxc = new TaxCalculator();
 
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1000; i++)
             {
 
                 taxc.SetCustomTaxRate(Commodity.FoodServices, i+45);
