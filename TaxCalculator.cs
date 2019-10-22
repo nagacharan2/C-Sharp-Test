@@ -97,11 +97,14 @@ namespace Visit.Test
             {
                 Console.WriteLine(_customRates[ComTimeTuple]);
             }
-            var typ = _customRates.Where(k => k.Key.Item2 == commodity);
+            //var typ = _customRates.Where(k => k.Key.Item2 == commodity);
+            var typ = _customRates.Select(s => s.Key).Where(d => d.Item2 == commodity);
             foreach (var entry in typ)
             {
 
-                Console.WriteLine("Item 1: {0} , Item2 :{1}, Value : {2}", entry.Key.Item1, entry.Key.Item2, entry.Value);
+                // Console.WriteLine("Item 1: {0} , Item2 :{1}, Value : {2}", entry.Key.Item1, entry.Key.Item2, entry.Value);
+
+                Console.WriteLine("{0} and value is {1}",entry, _customRates[entry]);
 
             }
 
@@ -132,6 +135,16 @@ namespace Visit.Test
         {
 
             TaxCalculator taxc = new TaxCalculator();
+
+
+            for (int i = 0; i < 10; i++)
+            {
+
+                taxc.SetCustomTaxRate(Commodity.FoodServices, i+45);
+                Console.WriteLine(taxc.GetCurrentTaxRate(Commodity.FoodServices));
+
+            }
+
             for (int i = 0; i < 5; i++)
             {
 
