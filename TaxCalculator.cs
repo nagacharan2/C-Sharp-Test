@@ -77,8 +77,8 @@ namespace Visit.Test
             var commodityKeys = _customRates.Select(s => s.Key).Where(d => d.Item2 == commodity);
             if (commodityKeys.Count() == 0)
                 return GetStandardTaxRate(commodity);
-            else if (_customRates.ContainsKey(ComTimeTuple))       
-                return _customRates[ComTimeTuple];      
+            else if (_customRates.ContainsKey(ComTimeTuple))
+                return _customRates[ComTimeTuple];
             else if (date < commodityKeys.First().Item1)
                 return GetStandardTaxRate(commodity);
             else if (date > commodityKeys.Last().Item1)
@@ -136,28 +136,9 @@ namespace Visit.Test
             TaxCalculator taxc = new TaxCalculator();
             DateTime firstone = DateTime.Now;
 
-      
-
             Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, firstone));
             Console.WriteLine(" Tax rate for food is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, firstone));
 
-            /*           for (int i = 0; i < 10000; i++)
-                       {
-
-                           taxc.SetCustomTaxRate(Commodity.FoodServices, i + 45);
-                           Console.WriteLine(taxc.GetCurrentTaxRate(Commodity.FoodServices));
-
-                       }
-                       Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, DateTime.Now));
-
-                       for (int i = 0; i < 5; i++)
-                       {
-
-                           taxc.SetCustomTaxRate(Commodity.Food, i);
-                           Console.WriteLine("Tax for food is : {0}",taxc.GetCurrentTaxRate(Commodity.Food));
-
-                       }
-            */
         }
 
 
