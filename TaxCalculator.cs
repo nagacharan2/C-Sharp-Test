@@ -190,13 +190,17 @@ namespace Visit.Test
                     Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
                     Console.Write("Enter the Commodity: ");
                     string commodity = Console.ReadLine();
-                    Console.Write("Enter the DateTime: ");
-                    string custTax = Console.ReadLine();
-                    double customTax = Convert.ToDouble(custTax);
+                    Console.Write("Enter the DateTime (yyyy-MM-dd HH:mm:ss) : ");
+                    string date_pattern = "yyyy-MM-dd HH:mm:ss";
+                    DateTime dateTime = DateTime.ParseExact(Console.ReadLine(), date_pattern, null);
+
+
+                  //  string custTax = Console.ReadLine();
+                   // double customTax = Convert.ToDouble(custTax);
                     Commodity comm = (Commodity)Convert.ToInt32(commodity);
 
-                    taxc.SetCustomTaxRate(comm, customTax);
-                    Console.WriteLine("Taxrate of {0} is  {1}", comm,taxc.GetTaxRateForDateTime(comm, datetime));
+                   // taxc.SetCustomTaxRate(comm, customTax);
+                    Console.WriteLine("Taxrate of {0} is  {1}", comm,taxc.GetTaxRateForDateTime(comm, dateTime));
 
 
                 }
