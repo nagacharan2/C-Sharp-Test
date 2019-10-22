@@ -125,116 +125,92 @@ namespace Visit.Test
         CulturalServices    //6%
     }
 
+    public class InvalidCommodityException : Exception
+    {
+        public InvalidCommodityException(String message)
 
+            : base(message)
+        {
+        }
+    }
     public class Program
 
     {
+        static void validateCommodity(int commodity)
+        {
+            if (commodity < 0 || commodity > 7)
+                throw new InvalidCommodityException("Invalid Commodity Entered, try again ..!!");
+        }
         public static void Main(string[] args)
         {
 
             TaxCalculator taxc = new TaxCalculator();
-
-            Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, DateTime.Now));
-            Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, DateTime.Now));
-
-            taxc.SetCustomTaxRate(Commodity.FoodServices, 0.335);
-            Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetCurrentTaxRate(Commodity.FoodServices));
-
-            taxc.SetCustomTaxRate(Commodity.FoodServices, 0.456);
-            Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetCurrentTaxRate(Commodity.FoodServices));
-
-            Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, DateTime.Now));
-
             bool flag = true;
-            while (flag)
+            try
             {
-                Console.WriteLine("1.GetStandardTaxRate 2.SetCustomTaxRate 3.GetTaxRateForDateTime 4.GetCurrentTaxRate 5.Exit");
-                Console.Write("Enter Your Choice: ");
-                int input = int.Parse(Console.ReadLine());
-
-                if (input == 1)
+                while (flag)
                 {
+                    Console.WriteLine("1.GetStandardTaxRate 2.SetCustomTaxRate 3.GetTaxRateForDateTime 4.GetCurrentTaxRate 5.Exit");
+                    Console.Write("Enter Your Choice: ");
+                    int input = int.Parse(Console.ReadLine());
 
-                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
-                    Console.Write("Enter the Commodity: ");
-                    string commodity = Console.ReadLine();
-                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
-                    Console.WriteLine("Taxrate of {0} is {1}", comm, taxc.GetStandardTaxRate(comm));
-
-
+                    if (input == 1)
+                    {
+                        Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                        Console.Write("Enter the Commodity: ");
+                        string commodity = Console.ReadLine();
+                        Commodity comm = (Commodity)Convert.ToInt32(commodity);
+                        validateCommodity(Convert.ToInt32(commodity));
+                        Console.WriteLine("Taxrate of {0} is {1}", comm, taxc.GetStandardTaxRate(comm));
+                    }
+                    else if (input == 2)
+                    {
+                        Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                        Console.Write("Enter the Commodity: ");
+                        string commodity = Console.ReadLine();
+                        validateCommodity(Convert.ToInt32(commodity));
+                        Console.Write("Enter the Custom TaxRate: ");
+                        string custTax = Console.ReadLine();
+                        double customTax = Convert.ToDouble(custTax);
+                        Commodity comm = (Commodity)Convert.ToInt32(commodity);
+                        taxc.SetCustomTaxRate(comm, customTax);
+                        Console.WriteLine("Taxrate of {0} is updated to {1}", comm, customTax);
+                    }
+                    else if (input == 3)
+                    {
+                        Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                        Console.Write("Enter the Commodity: ");
+                        string commodity = Console.ReadLine();
+                        validateCommodity(Convert.ToInt32(commodity));
+                        Console.Write("Enter the DateTime (yyyy-MM-dd HH:mm:ss) : ");
+                        string date_pattern = "yyyy-MM-dd HH:mm:ss";
+                        DateTime dateTime = DateTime.ParseExact(Console.ReadLine(), date_pattern, null);
+                        Commodity comm = (Commodity)Convert.ToInt32(commodity);
+                        Console.WriteLine("Taxrate of {0} is  {1}", comm, taxc.GetTaxRateForDateTime(comm, dateTime));
+                    }
+                    else if (input == 4)
+                    {
+                        Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
+                        Console.Write("Enter the Commodity: ");
+                        string commodity = Console.ReadLine();
+                        validateCommodity(Convert.ToInt32(commodity));
+                        Commodity comm = (Commodity)Convert.ToInt32(commodity);
+                        Console.WriteLine("Current Taxrate of {0} is {1}", comm, taxc.GetCurrentTaxRate(comm));
+                    }
+                    else if (input == 5)
+                        Environment.Exit(0);
+                    else
+                        Console.WriteLine("Enter the correct input again..");
                 }
-
-
-                else if (input == 2)
-                {
-
-                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
-                    Console.Write("Enter the Commodity: ");
-                    string commodity = Console.ReadLine();
-                    Console.Write("Enter the Custom TaxRate: ");
-                    string custTax = Console.ReadLine();
-                    double customTax = Convert.ToDouble(custTax);
-                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
-
-                    taxc.SetCustomTaxRate(comm, customTax);
-                    Console.WriteLine("Taxrate of {0} is updated to {1}", comm, customTax);
-
-
-                }
-
-
-
-                else if (input == 3)
-                {
-
-                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
-                    Console.Write("Enter the Commodity: ");
-                    string commodity = Console.ReadLine();
-                    Console.Write("Enter the DateTime (yyyy-MM-dd HH:mm:ss) : ");
-                    string date_pattern = "yyyy-MM-dd HH:mm:ss";
-                    DateTime dateTime = DateTime.ParseExact(Console.ReadLine(), date_pattern, null);
-
-
-                  //  string custTax = Console.ReadLine();
-                   // double customTax = Convert.ToDouble(custTax);
-                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
-
-                   // taxc.SetCustomTaxRate(comm, customTax);
-                    Console.WriteLine("Taxrate of {0} is  {1}", comm,taxc.GetTaxRateForDateTime(comm, dateTime));
-
-
-                }
-
-
-
-                else if (input == 4)
-                {
-
-                    Console.WriteLine("0.Default 1.Alcohol 2.Food 3.FoodServices 4.Literature 5.Transport 6.CulturalServices");
-                    Console.Write("Enter the Commodity: ");
-                    string commodity = Console.ReadLine();
-
-                    Commodity comm = (Commodity)Convert.ToInt32(commodity);
-
-                    Console.WriteLine("Current Taxrate of {0} is {1}", comm, taxc.GetCurrentTaxRate(comm));
-
-
-                }
-                else if (input == 5)
-                    Environment.Exit(0);
-                else
-                    Console.WriteLine("Enter the correct input again..");
-
-
-
-
             }
-
-           
-
-
+            catch (InvalidCommodityException e)
+            {
+                Console.WriteLine("User defined exception: {0}", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception :  {0}", e.Message);
+            }
         }
-
-
     }
 }
