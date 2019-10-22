@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,7 +107,7 @@ namespace Visit.Test
                 return GetStandardTaxRate(commodity);
             else
                 return _customRates[commodityKeys.Last()];
-            throw new NotImplementedException();
+
         }
 
     }
@@ -134,10 +132,18 @@ namespace Visit.Test
         {
 
             TaxCalculator taxc = new TaxCalculator();
-            DateTime firstone = DateTime.Now;
 
-            Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, firstone));
-            Console.WriteLine(" Tax rate for food is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, firstone));
+            Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, DateTime.Now));
+            Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetTaxRateForDateTime(Commodity.FoodServices, DateTime.Now));
+
+            taxc.SetCustomTaxRate(Commodity.FoodServices, 0.335);
+            Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetCurrentTaxRate(Commodity.FoodServices));
+
+            taxc.SetCustomTaxRate(Commodity.FoodServices, 0.456);
+            Console.WriteLine(" Tax rate for foodservices is : {0}", taxc.GetCurrentTaxRate(Commodity.FoodServices));
+
+            Console.WriteLine(" Tax rate for alcohol is : {0}", taxc.GetTaxRateForDateTime(Commodity.Alcohol, DateTime.Now));
+
 
         }
 
